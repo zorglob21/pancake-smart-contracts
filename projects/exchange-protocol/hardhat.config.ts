@@ -1,4 +1,5 @@
 import type { HardhatUserConfig, NetworkUserConfig } from "hardhat/types";
+import "@nomiclabs/hardhat-etherscan";
 import "@nomiclabs/hardhat-ethers";
 import "@nomiclabs/hardhat-web3";
 import "@nomiclabs/hardhat-truffle5";
@@ -20,12 +21,21 @@ const bscMainnet: NetworkUserConfig = {
   accounts: [process.env.KEY_MAINNET!],
 };
 
-const config: HardhatUserConfig = {
+interface CustomHardhatUserConfig extends HardhatUserConfig {
+  etherscan: {
+    apiKey: string;
+  };
+}
+
+const config: CustomHardhatUserConfig = {
   defaultNetwork: "hardhat",
   networks: {
     hardhat: {},
-    // testnet: bscTestnet,
+     testnet: bscTestnet,
     // mainnet: bscMainnet,
+  },
+  etherscan: {
+    apiKey: process.env.ETHERSCAN_API_KEY!, // Use your Etherscan API key from your .env file
   },
   solidity: {
     compilers: [
